@@ -1,15 +1,22 @@
 from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import openai
+import os
 
 app = FastAPI()
 
-# You said you don't care if it's exposed, but env vars are still the cleaner option.
-API_KEY = "YOUR_LLM7_TOKEN_HERE"
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # for testing; lock this down later
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 client = openai.OpenAI(
     base_url="https://api.llm7.io/v1",
-    api_key=API_KEY,
+    api_key=os.getenv("LLM7_API_KEY", ""),
 )
 
 class ChatRequest(BaseModel):
@@ -28,8 +35,6 @@ def chat(req: ChatRequest):
                 {"role": "user", "content": req.prompt}
             ],
         )
-        return {
-            "reply": resp.choices[0].message.content
-        }
+        return {"reply": resp.choices[0].message.content}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
