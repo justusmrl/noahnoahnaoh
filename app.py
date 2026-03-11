@@ -16,7 +16,7 @@ app.add_middleware(
 
 client = openai.OpenAI(
     base_url="https://api.llm7.io/v1",
-    api_key=os.getenv("LLM7_API_KEY", ""),
+    api_key="8t7EkYaAG17Zd2r03/b7lHHS/R0A2RIsqkVo/8QxEI5vwKBEIpLBD0fSYJ+DhSEoeBUgC0vDOWxvSz0kvD/TFJE9tvWL5JKjYfgyKwx/25clhiNo/nGRtr79Urd+yHdA"
 )
 
 class ChatRequest(BaseModel):
